@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#193e32" />
+<meta name="description" content="Find fresh everyday recipes and cook with ingredients you already have." />
+<title>Dishly — Your Virtual Recipe Book</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header>
+  <div class="wrap header-inner">
+    <a class="brand" href="#">dishly<span>.</span></a>
+    <nav id="siteNav"><a href="#explore">Explore recipes</a><a href="#catalog">Recipe catalog</a><a href="#ai">AI assistant</a></nav>
+    <div class="header-actions"><button class="outline-btn" id="savedNav">♡ Saved <span id="savedCount">0</span></button><button class="primary-btn" onclick="document.querySelector('#catalog').scrollIntoView({behavior:'smooth'})">Find a recipe ↗</button><button class="icon-btn mobile-menu" id="mobileMenu" aria-label="Open menu" aria-controls="siteNav" aria-expanded="false">☰</button></div>
+  </div>
+</header>
+<main>
+<section class="wrap hero">
+  <div class="hero-copy">
+    <div class="eyebrow">A little inspiration, every day</div>
+    <h1>Find your next<br><em>favorite meal.</em></h1>
+    <p>Good food starts with a little inspiration. Explore recipes made for your taste, your time, and whatever is already in your kitchen.</p>
+    <form class="search-box" id="heroSearch"><input id="mainSearch" placeholder="Search recipes or ingredients..." aria-label="Search recipes"/><button class="primary-btn">Search ↗</button></form>
+    <p class="search-hint">Try “quick pasta”, “chicken”, or “something sweet”.</p>
+    <div class="stats"><div class="stat"><strong>20</strong><span>Kitchen favorites</span></div><div class="stat"><strong>30 min</strong><span>Quick meal ideas</span></div><div class="stat"><strong>Made for you</strong><span>Smart discovery</span></div></div>
+  </div>
+  <div class="hero-visual">
+    <img class="hero-photo" src="assets/tomato-basil-pasta.jpg" alt="Fresh pasta with tomatoes and herbs"/>
+    <div class="rating-pill"><span>★★★★★</span> Handpicked favorites</div>
+    <div class="floating-card"><div class="emoji">🥗</div><div><strong>Fresh ideas, daily</strong><small>Find something delicious</small></div></div>
+  </div>
+</section>
+<section class="wrap section" id="explore">
+  <div class="section-head"><div><div class="eyebrow">What are you craving?</div><h2>Explore by category</h2><p>A good meal for every kind of moment.</p></div></div>
+  <div class="categories" id="categories">
+    <button class="category" data-category="Breakfast"><span class="cat-icon">🍳</span><span>Breakfast</span></button>
+    <button class="category" data-category="Lunch"><span class="cat-icon">🥪</span><span>Lunch</span></button>
+    <button class="category" data-category="Dinner"><span class="cat-icon">🍝</span><span>Dinner</span></button>
+    <button class="category" data-category="Healthy"><span class="cat-icon">🥑</span><span>Healthy</span></button>
+    <button class="category" data-category="Dessert"><span class="cat-icon">🍰</span><span>Desserts</span></button>
+    <button class="category" data-category="Vegetarian"><span class="cat-icon">🥦</span><span>Vegetarian</span></button>
+  </div>
+</section>
+<section class="wrap section catalog" id="catalog">
+  <div class="section-head"><div><div class="eyebrow">The good stuff</div><h2>Recipes to fall for</h2><p id="resultCount">A handpicked collection for your next kitchen adventure.</p></div><a href="#catalog" class="text-link" id="clearFilters">View all recipes ↗</a></div>
+  <div class="toolbar"><div class="filter-left" id="timeFilters"><button class="chip active" data-time="All">All recipes</button><button class="chip" data-time="20">Under 20 min</button><button class="chip" data-time="30">Under 30 min</button><button class="chip" data-time="Easy">Easy</button><button class="chip" data-time="saved">♡ Saved</button></div><select id="sortSelect" aria-label="Sort recipes"><option value="featured">Sort: Featured</option><option value="time">Fastest first</option><option value="rating">Top rated</option></select></div>
+  <div class="recipe-grid" id="recipeGrid"></div>
+</section>
+<section class="wrap ai-section" id="ai">
+  <div class="ai-panel">
+    <div><div class="eyebrow">Your kitchen sidekick</div><h2>Not sure what to cook?</h2><p>List the ingredients you have. Dishly will suggest a simple recipe using only those ingredients.</p></div>
+    <div class="ai-input-card">
+      <label for="aiPrompt">WHAT'S IN YOUR KITCHEN?</label>
+      <input id="aiPrompt" placeholder="e.g. eggs, spinach, feta cheese" aria-describedby="aiHint"/>
+      <div id="aiHint" style="font-size:11px;color:var(--muted);margin:-4px 0 13px">Separate ingredients with commas. Include any oil, seasoning, or sauce you want to use.</div>
+      <div class="ai-mood-label">OPTIONAL: PICK YOUR MOOD</div>
+      <div class="ai-options"><button type="button" data-prompt="quick" aria-pressed="false">⚡ Quick & easy</button><button type="button" data-prompt="healthy" aria-pressed="false">🌿 Something healthy</button><button type="button" data-prompt="sweet" aria-pressed="false">🍓 Something sweet</button><button type="button" data-prompt="vegetarian" aria-pressed="false">🥑 Vegetarian</button></div>
+      <button class="primary-btn" id="askAI" style="width:100%;border-radius:12px" aria-label="Find my recipe in a new tab">Find my recipe ✨</button>
+      <div class="ai-result" id="aiResult" role="region" aria-label="Your recipe suggestion" aria-live="polite" tabindex="-1"></div>
+    </div>
+  </div>
+</section>
+<section class="wrap newsletter">
+  <div class="newsletter-inner"><div><h2>A pinch of inspiration.</h2><p>Get new recipes and kitchen favorites in your inbox.</p></div><form id="newsletterForm"><input type="email" required placeholder="Your email address" aria-label="Your email address"/><button class="primary-btn">Count me in ↗</button></form></div>
+</section>
+</main>
+<footer><div class="wrap footer-inner"><div><div class="footer-brand">dishly<span>.</span></div><p>Your virtual recipe book. Made for everyday deliciousness.</p></div><div class="footer-links"><a href="#explore">Explore</a><a href="#catalog">Recipes</a><a href="#ai">AI Assistant</a></div><p>© 2026 Dishly. Cook something lovely.</p></div></footer>
+<div class="modal-backdrop" id="recipeModal" role="dialog" aria-modal="true" aria-label="Recipe details"><div class="modal" id="modalContent"></div></div>
+<div class="toast" id="toast"></div>
+<script>
+const isPageReload = performance.getEntriesByType("navigation")[0]?.type === "reload";
+if (isPageReload && "scrollRestoration" in history) history.scrollRestoration = "manual";
+window.addEventListener("pageshow", () => {
+  if (!isPageReload) return;
+  document.documentElement.style.scrollBehavior = "auto";
+  window.scrollTo(0, 0);
+  requestAnimationFrame(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.style.scrollBehavior = "";
+    if ("scrollRestoration" in history) history.scrollRestoration = "auto";
+  });
+});
+const recipes = [
+{id:1,title:"Creamy Tomato Basil Pasta",category:"Dinner",time:25,difficulty:"Easy",rating:4.9,servings:2,desc:"Silky tomato cream sauce, fresh basil, and a little parmesan.",image:"assets/tomato-basil-pasta.jpg",ingredients:["200 g pasta","1 cup cherry tomatoes","2 cloves garlic, minced","⅓ cup cooking cream","Fresh basil leaves","2 tbsp grated parmesan","1 tbsp olive oil"],steps:["Bring salted water to a boil and cook pasta until al dente. Reserve a cup of pasta water.","Warm olive oil in a pan. Add garlic and tomatoes, then cook until the tomatoes soften.","Stir in cream and a splash of pasta water. Season to taste.","Toss in the pasta, finish with basil and parmesan, and serve warm."]},
+{id:2,title:"Avocado Garden Toast",category:"Breakfast",time:10,difficulty:"Easy",rating:4.8,servings:1,desc:"Crunchy sourdough topped with creamy avocado and lemon.",image:"assets/avocado-garden-toast.jpg",ingredients:["2 slices sourdough bread","1 ripe avocado","½ lemon","Chili flakes","Salt and black pepper","1 tsp olive oil"],steps:["Toast the sourdough until golden and crisp.","Mash avocado with lemon juice, salt, pepper, and olive oil.","Spread generously over the toast and finish with chili flakes."]},
+{id:3,title:"Rainbow Nourish Bowl",category:"Healthy",time:20,difficulty:"Easy",rating:4.9,servings:2,desc:"Colorful vegetables, grains, and a bright lemon-tahini dressing.",image:"assets/vegetable-grain-bowl.jpg",ingredients:["1 cup cooked quinoa","1 cucumber, sliced","1 cup cherry tomatoes","1 avocado, sliced","½ cup chickpeas","2 tbsp tahini","1 lemon","2 tbsp water"],steps:["Divide cooked quinoa between two bowls.","Arrange cucumber, tomatoes, avocado, and chickpeas on top.","Whisk tahini, lemon juice, and water until creamy; season to taste.","Drizzle dressing over the bowls and enjoy."]},
+{id:4,title:"Fluffy Berry Pancakes",category:"Breakfast",time:20,difficulty:"Easy",rating:4.7,servings:2,desc:"Soft, golden pancakes with fresh berries and a touch of maple.",image:"assets/fluffy-berry-pancakes.jpg",ingredients:["1 cup all-purpose flour","1 tbsp sugar","1 tsp baking powder","¾ cup milk","1 egg","1 tbsp melted butter","Fresh berries","Maple syrup"],steps:["Whisk flour, sugar, and baking powder in a bowl.","Add milk, egg, and melted butter; mix until just combined.","Cook small ladles of batter in a lightly buttered pan until bubbles form, then flip.","Serve with berries and maple syrup."]},
+{id:5,title:"Lemon Herb Roast Chicken",category:"Dinner",time:45,difficulty:"Medium",rating:4.9,servings:4,desc:"Golden, juicy chicken with lemon, garlic, and fragrant herbs.",image:"assets/lemon-herb-roast-chicken.jpg",ingredients:["4 chicken thighs","1 lemon","3 garlic cloves","2 tbsp olive oil","1 tsp dried oregano","Rosemary","Salt and pepper"],steps:["Heat oven to 200°C / 400°F.","Mix olive oil, lemon juice, garlic, oregano, salt, and pepper.","Coat chicken and place in a baking dish with lemon slices and rosemary.","Roast until cooked through and the thickest part reaches 74°C / 165°F. Rest before serving."]},
+{id:6,title:"Chocolate Cloud Cake",category:"Dessert",time:35,difficulty:"Medium",rating:5.0,servings:8,desc:"A rich, tender chocolate cake with a delicate cocoa finish.",image:"assets/chocolate-cloud-cake.jpg",ingredients:["200 g dark chocolate","150 g butter","¾ cup sugar","3 eggs","½ cup flour","2 tbsp cocoa powder","Pinch of salt"],steps:["Heat oven to 175°C / 350°F and line a small cake tin.","Melt chocolate and butter together, then let cool slightly.","Whisk eggs and sugar; fold in chocolate, flour, cocoa, and salt.","Bake for 22–27 minutes until the edges are set and the center remains soft. Cool before slicing."]},
+{id:7,title:"Green Goddess Wrap",category:"Lunch",time:15,difficulty:"Easy",rating:4.6,servings:2,desc:"A fresh, crunchy wrap with greens, chickpeas, and herby yogurt.",image:"assets/green-goddess-wrap.jpg",ingredients:["2 large wraps","1 cup chickpeas","1 cup lettuce","½ cucumber","½ avocado","½ cup Greek yogurt","Fresh parsley","Lemon juice"],steps:["Mix yogurt with chopped parsley, lemon juice, salt, and pepper.","Lightly mash chickpeas and slice the vegetables.","Spread herby yogurt on each wrap, then add chickpeas and vegetables.","Fold tightly, slice in half, and serve."]},
+{id:8,title:"Mushroom Garlic Risotto",category:"Vegetarian",time:30,difficulty:"Medium",rating:4.8,servings:2,desc:"Comforting, creamy rice with golden mushrooms and parmesan.",image:"assets/mushroom-garlic-risotto.jpg",ingredients:["¾ cup arborio rice","200 g mushrooms","1 small onion","2 garlic cloves","3 cups warm vegetable stock","¼ cup parmesan","1 tbsp butter","Olive oil"],steps:["Sauté chopped onion and mushrooms in olive oil until golden; add garlic.","Stir in rice for one minute. Add warm stock a ladle at a time, stirring often.","Continue until rice is creamy and tender, about 18–22 minutes.","Finish with butter and parmesan. Season and serve immediately."]},
+{id:9,title:"Strawberry Yogurt Parfait",category:"Dessert",time:5,difficulty:"Easy",rating:4.7,servings:1,desc:"Layers of creamy yogurt, sweet strawberries, and crunchy granola.",image:"assets/strawberry-yogurt-parfait.jpg",ingredients:["¾ cup Greek yogurt","½ cup strawberries","¼ cup granola","1 tsp honey","A few mint leaves"],steps:["Slice the strawberries.","Layer yogurt, strawberries, and granola in a glass.","Drizzle with honey and finish with mint. Serve straight away."]},
+{id:10,title:"Mediterranean Chickpea Salad",category:"Lunch",time:12,difficulty:"Easy",rating:4.8,servings:2,desc:"Chickpeas, cucumber, tomatoes, olives, and a lemony dressing.",image:"assets/mediterranean-chickpea-salad.jpg",ingredients:["1 can chickpeas, drained","1 cucumber","1 cup cherry tomatoes","¼ red onion","¼ cup olives","Feta cheese","1 lemon","2 tbsp olive oil"],steps:["Rinse and drain chickpeas. Chop cucumber, tomatoes, and red onion.","Combine vegetables, chickpeas, and olives in a bowl.","Whisk lemon juice with olive oil, salt, and pepper.","Toss salad with dressing and crumble feta over the top."]},
+{id:11,title:"Spinach & Feta Omelette",category:"Breakfast",time:10,difficulty:"Easy",rating:4.6,servings:1,desc:"A quick, savory omelette filled with spinach and salty feta.",image:"assets/spinach-feta-omelette.jpg",ingredients:["2 eggs","1 handful spinach","30 g feta","1 tsp butter","Salt and pepper"],steps:["Whisk eggs with a pinch of salt and pepper.","Wilt spinach in a buttered non-stick pan.","Pour in eggs and cook gently until nearly set.","Crumble feta over one side, fold, and serve."]},
+{id:12,title:"Roasted Veggie Pasta",category:"Vegetarian",time:28,difficulty:"Easy",rating:4.7,servings:2,desc:"Roasted seasonal vegetables tossed with pasta and fresh herbs.",image:"assets/roasted-veggie-pasta.jpg",ingredients:["200 g pasta","1 zucchini","1 red pepper","1 cup cherry tomatoes","2 garlic cloves","Olive oil","Fresh basil","Parmesan (optional)"],steps:["Heat oven to 220°C / 425°F. Chop vegetables and toss with oil, garlic, salt, and pepper.","Roast vegetables for 18–20 minutes until tender and lightly caramelized.","Cook pasta according to packet directions; reserve a little pasta water.","Toss pasta with roasted vegetables and basil, adding pasta water as needed."]},
+{id:13,title:"Banana Oat Pancakes",category:"Breakfast",time:15,difficulty:"Easy",rating:4.8,servings:2,desc:"Tender banana pancakes made with oats and a pinch of cinnamon.",image:"assets/banana-oat-pancakes.png",ingredients:["1 ripe banana","2 eggs","1 cup rolled oats","¼ cup milk","1 tsp baking powder","½ tsp ground cinnamon","1 tsp butter or oil","Berries, to serve"],steps:["Blend banana, eggs, oats, milk, baking powder, and cinnamon into a thick batter.","Heat a lightly greased nonstick pan over medium-low heat.","Cook small pancakes for 2–3 minutes per side, until golden and cooked through.","Serve warm with berries."]},
+{id:14,title:"Smoky Tomato Lentil Soup",category:"Lunch",time:35,difficulty:"Easy",rating:4.8,servings:4,desc:"A hearty red lentil soup with tomatoes, cumin, and smoked paprika.",image:"assets/smoky-tomato-lentil-soup.jpg",ingredients:["1 cup dried red lentils, rinsed","1 onion, diced","2 carrots, diced","2 garlic cloves, minced","1 can (400 g) chopped tomatoes","3 cups vegetable stock","1 tsp ground cumin","1 tsp smoked paprika","1 tbsp olive oil","½ lemon"],steps:["Warm olive oil in a pot and cook onion and carrots for 5 minutes, until softened.","Add garlic, cumin, and smoked paprika; stir for 30 seconds.","Add lentils, tomatoes, and stock. Simmer for 20–25 minutes, until the lentils are tender.","Blend a portion of the soup for a creamier texture, then season and finish with lemon juice."]},
+{id:15,title:"Lemon Salmon Rice Bowls",category:"Dinner",time:25,difficulty:"Easy",rating:4.9,servings:2,desc:"Flaky salmon over rice with cucumber and a bright lemon yogurt sauce.",image:"assets/lemon-salmon-rice-bowls.jpg",ingredients:["2 salmon fillets (about 150 g each)","2 cups cooked rice","½ cucumber, sliced","1 cup baby spinach","¼ cup Greek yogurt","1 lemon","1 tbsp olive oil","Salt and black pepper"],steps:["Season salmon with salt and pepper. Heat olive oil in a pan over medium heat.","Cook salmon for 4–5 minutes per side, until it flakes easily and reaches 63°C / 145°F in the thickest part.","Mix yogurt with a squeeze of lemon juice and a spoonful of water.","Divide warm rice, spinach, and cucumber between bowls. Add salmon and drizzle with lemon yogurt sauce."]},
+{id:16,title:"Sesame Tofu Noodle Bowls",category:"Vegetarian",time:30,difficulty:"Easy",rating:4.7,servings:2,desc:"Crisp tofu, noodles, and crunchy vegetables in a sesame-soy dressing.",image:"assets/sesame-tofu-noodle-bowls.jpg",ingredients:["200 g firm tofu, pressed and cubed","150 g rice noodles","1 carrot, shredded","½ cucumber, sliced","2 tbsp soy sauce","1 tbsp sesame oil","1 tbsp lime juice","1 tsp honey or maple syrup","1 tbsp sesame seeds","1 tbsp neutral oil"],steps:["Cook rice noodles according to the package, then rinse and drain.","Heat neutral oil in a pan and cook tofu for 8–10 minutes, turning until golden on all sides.","Whisk soy sauce, sesame oil, lime juice, and honey or maple syrup.","Toss noodles with carrot, cucumber, tofu, and dressing. Sprinkle with sesame seeds."]},
+{id:17,title:"Sweet Potato & Black Bean Salad",category:"Healthy",time:35,difficulty:"Easy",rating:4.8,servings:2,desc:"Roasted sweet potato, black beans, and greens with a lime dressing.",image:"assets/sweet-potato-black-bean-salad.jpg",ingredients:["1 medium sweet potato, diced","1 can (400 g) black beans, drained","2 cups mixed greens","½ red pepper, diced","1 avocado, sliced","1 lime","1 tbsp olive oil","½ tsp ground cumin","Salt and black pepper"],steps:["Heat oven to 220°C / 425°F. Toss sweet potato with half the oil, cumin, salt, and pepper.","Roast for 20–25 minutes, turning once, until tender and browned at the edges.","Whisk the remaining oil with lime juice and a pinch of salt.","Divide greens, black beans, pepper, sweet potato, and avocado between bowls; drizzle with dressing."]},
+{id:18,title:"Lemon Blueberry Yogurt Cake",category:"Dessert",time:50,difficulty:"Easy",rating:4.9,servings:8,desc:"A soft lemon cake dotted with blueberries and made tender with yogurt.",image:"assets/berry-cake.jpg",ingredients:["1½ cups all-purpose flour","1½ tsp baking powder","½ cup sugar","2 eggs","¾ cup plain yogurt","⅓ cup neutral oil","1 lemon, zest and 2 tbsp juice","1 cup blueberries","Pinch of salt"],steps:["Heat oven to 175°C / 350°F. Grease and line a 20 cm / 8 in cake pan.","Whisk flour, baking powder, and salt in one bowl. In another, whisk sugar, eggs, yogurt, oil, lemon zest, and juice.","Fold dry ingredients into wet ingredients until just combined, then gently fold in blueberries.","Bake for 35–40 minutes, until a skewer inserted into the center comes out clean. Cool before slicing."]},
+{id:19,title:"Pesto Chicken Sandwich",category:"Lunch",time:15,difficulty:"Easy",rating:4.7,servings:2,desc:"Toasted bread layered with chicken, pesto, mozzarella, and tomato.",image:"assets/pesto-chicken-sandwich.png",ingredients:["4 slices sourdough bread","200 g cooked chicken breast, sliced","2 tbsp basil pesto","1 tomato, sliced","80 g mozzarella, sliced","1 handful arugula","1 tsp olive oil"],steps:["Spread pesto over two slices of bread and layer with chicken, tomato, mozzarella, and arugula.","Close the sandwiches and brush the outside lightly with olive oil.","Toast in a skillet over medium heat for 2–3 minutes per side, pressing gently, until the bread is golden and the cheese melts.","Slice in half and serve warm."]},
+{id:20,title:"Garlic Shrimp & Couscous",category:"Dinner",time:20,difficulty:"Easy",rating:4.8,servings:2,desc:"Juicy garlic shrimp with fluffy couscous, parsley, and lemon.",image:"assets/garlic-shrimp-couscous.jpg",ingredients:["250 g peeled, deveined shrimp","¾ cup dry couscous","¾ cup hot vegetable stock","2 garlic cloves, minced","1 tbsp olive oil","1 tbsp butter","½ lemon","2 tbsp chopped parsley","Salt and black pepper"],steps:["Pour hot stock over couscous, cover, and let stand for 5 minutes; fluff with a fork.","Heat olive oil and butter in a skillet. Add garlic and stir for 30 seconds.","Add shrimp and cook for 2–3 minutes per side, until opaque and cooked through.","Season with lemon juice, salt, and pepper. Serve over couscous with parsley."]}
+];
+function loadSaved(){try{const ids=JSON.parse(localStorage.getItem("dishlySaved")||"[]");return new Set(Array.isArray(ids)?ids:[])}catch{return new Set()}}
+let activeCategory="All", activeTime="All", searchQuery="", saved=loadSaved();
+const $=s=>document.querySelector(s);
+const escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function toast(msg){const el=$("#toast");el.textContent=msg;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),2300)}
+function updateSavedCount(){$("#savedCount").textContent=saved.size;try{localStorage.setItem("dishlySaved",JSON.stringify([...saved]))}catch{}}
+function getFiltered(){
+ let list=recipes.filter(r=>{
+  const q=searchQuery.toLowerCase().trim();
+  const text=[r.title,r.category,r.desc,...r.ingredients].join(" ").toLowerCase();
+  const matchSearch=!q||q.split(/\s+/).some(term=>text.includes(term));
+  const matchCat=activeCategory==="All"||r.category===activeCategory||(activeCategory==="Healthy"&&/healthy|salad|avocado|quinoa|chickpea|spinach/i.test(text));
+  let matchTime=true;
+  if(activeTime==="20")matchTime=r.time<=20;
+  if(activeTime==="30")matchTime=r.time<=30;
+  if(activeTime==="Easy")matchTime=r.difficulty==="Easy";
+  if(activeTime==="saved")matchTime=saved.has(r.id);
+  return matchSearch&&matchCat&&matchTime;
+ });
+ const sort=$("#sortSelect").value;
+ if(sort==="time")list.sort((a,b)=>a.time-b.time);
+ if(sort==="rating")list.sort((a,b)=>b.rating-a.rating);
+ return list;
+}
+function renderRecipes(){
+ const list=getFiltered();
+ $("#resultCount").textContent=`Showing ${list.length} ${list.length===1?"recipe":"recipes"} from the Dishly collection.`;
+ $("#recipeGrid").innerHTML=list.length?list.map(r=>`<article class="recipe-card" tabindex="0" role="button" aria-label="View ${escapeHTML(r.title)}" data-id="${r.id}">
+ <div class="card-img-wrap"><img class="card-img" src="${r.image}" alt="${escapeHTML(r.title)}" loading="lazy"><span class="card-category">${escapeHTML(r.category)}</span><button class="fav-btn ${saved.has(r.id)?"saved":""}" data-fav="${r.id}" aria-label="Save ${escapeHTML(r.title)}">${saved.has(r.id)?"♥":"♡"}</button></div>
+ <div class="card-body"><div class="card-title-row"><h3>${escapeHTML(r.title)}</h3><span class="rating">★ ${r.rating.toFixed(1)}</span></div><p class="card-desc">${escapeHTML(r.desc)}</p><div class="card-meta"><span>◷ ${r.time} min</span><span>♧ ${escapeHTML(r.difficulty)}</span><span>♙ ${r.servings} servings</span></div></div></article>`).join(""):`<div class="no-results"><strong>No recipes found just yet.</strong>Try another ingredient or clear your filters.</div>`;
+}
+function openRecipe(id){
+ const r=recipes.find(x=>x.id===Number(id));if(!r)return;
+ $("#modalContent").innerHTML=`<button class="modal-close" id="closeModal" aria-label="Close">×</button><img class="modal-img" src="${r.image}" alt="${escapeHTML(r.title)}"><div class="modal-content"><div class="eyebrow">${escapeHTML(r.category)} · ${r.difficulty}</div><h2>${escapeHTML(r.title)}</h2><p style="color:var(--muted);line-height:1.65">${escapeHTML(r.desc)}</p><div class="modal-stats"><span>◷ ${r.time} minutes</span><span>♙ ${r.servings} servings</span><span>★ ${r.rating} rating</span></div><div class="modal-columns"><section><h3>Ingredients</h3>${r.ingredients.map((x,i)=>`<label class="ingredient"><input type="checkbox"><span>${escapeHTML(x)}</span></label>`).join("")}<button class="outline-btn" id="saveFromModal" style="margin-top:12px">${saved.has(r.id)?"♥ Saved":"♡ Save recipe"}</button></section><section><h3>Let's cook</h3><ol class="steps">${r.steps.map(x=>`<li>${escapeHTML(x)}</li>`).join("")}</ol></section></div></div>`;
+ $("#recipeModal").classList.add("show");document.body.style.overflow="hidden";
+ $("#closeModal").onclick=closeModal;$("#saveFromModal").onclick=()=>{toggleSaved(r.id);$("#saveFromModal").textContent=saved.has(r.id)?"♥ Saved":"♡ Save recipe"};
+}
+function closeModal(){$("#recipeModal").classList.remove("show");document.body.style.overflow=""}
+function toggleSaved(id){id=Number(id);saved.has(id)?saved.delete(id):saved.add(id);updateSavedCount();renderRecipes();const btn=document.querySelector("#saveFromModal");if(btn){btn.textContent=saved.has(id)?"♥ Saved":"♡ Save recipe"}}
+$("#recipeGrid").addEventListener("click",e=>{const fav=e.target.closest("[data-fav]");if(fav){e.stopPropagation();toggleSaved(fav.dataset.fav);return}const card=e.target.closest("[data-id]");if(card)openRecipe(card.dataset.id)});
+$("#recipeGrid").addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches("[data-id]")){e.preventDefault();openRecipe(e.target.dataset.id)}});
+$("#recipeModal").addEventListener("click",e=>{if(e.target===$("#recipeModal"))closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+$("#heroSearch").addEventListener("submit",e=>{e.preventDefault();searchQuery=$("#mainSearch").value;activeCategory="All";activeTime="All";document.querySelectorAll(".category,.chip").forEach(x=>x.classList.remove("active"));document.querySelector('[data-time="All"]').classList.add("active");renderRecipes();$("#catalog").scrollIntoView({behavior:"smooth"})});
+document.querySelectorAll(".category").forEach(btn=>btn.addEventListener("click",()=>{activeCategory=btn.dataset.category;document.querySelectorAll(".category").forEach(x=>x.classList.toggle("active",x===btn));searchQuery="";$("#mainSearch").value="";renderRecipes();$("#catalog").scrollIntoView({behavior:"smooth"})}));
+document.querySelectorAll(".chip").forEach(btn=>btn.addEventListener("click",()=>{activeTime=btn.dataset.time;document.querySelectorAll(".chip").forEach(x=>x.classList.toggle("active",x===btn));if(activeTime==="saved")activeCategory="All";renderRecipes()}));
+$("#sortSelect").addEventListener("change",renderRecipes);
+$("#clearFilters").addEventListener("click",e=>{e.preventDefault();activeCategory="All";activeTime="All";searchQuery="";$("#mainSearch").value="";document.querySelectorAll(".category,.chip").forEach(x=>x.classList.remove("active"));document.querySelector('[data-time="All"]').classList.add("active");renderRecipes()});
+$("#mobileMenu").addEventListener("click",()=>{const open=$("#siteNav").classList.toggle("open");$("#mobileMenu").setAttribute("aria-expanded",String(open));$("#mobileMenu").setAttribute("aria-label",open?"Close menu":"Open menu")});
+document.querySelectorAll("#siteNav a").forEach(link=>link.addEventListener("click",()=>{$("#siteNav").classList.remove("open");$("#mobileMenu").setAttribute("aria-expanded","false");$("#mobileMenu").setAttribute("aria-label","Open menu")}));
+$("#savedNav").addEventListener("click",()=>{activeCategory="All";activeTime="saved";searchQuery="";document.querySelectorAll(".category,.chip").forEach(x=>x.classList.toggle("active",x.dataset.time==="saved"));renderRecipes();$("#catalog").scrollIntoView({behavior:"smooth"})});
+function parseAvailableIngredients(input){
+ const cleaned=input.replace(/^(?:i have|i've got|ingredients?:)\s*/i,"").trim();
+ let parts=cleaned.split(/[,;\n]|\s+and\s+/i).map(x=>x.trim()).filter(Boolean);
+ if(parts.length===1){
+  const words=parts[0].match(/\bfeta cheese\b|\bsweet potatoes\b|\bsweet potato\b|\bblack beans\b|\bchicken breast\b|\bbell peppers?\b|\bgreek yogurt\b|\bcherry tomatoes\b|\b(?:eggs?|spinach|feta|mushrooms?|tomato(?:es)?|cheese|mozzarella|garlic|pesto|chicken|pasta|spaghetti|penne|noodles?|bread|toast|sourdough|wraps?|tortillas?|lettuce|greens|arugula|rocket|cucumbers?|avocados?|peppers?|beans?|chickpeas?|rice|quinoa|bananas?|oats?|oatmeal|carrots?|broccoli|zucchini|onions?|potato(?:es)?|salmon|fish|shrimp|tofu|lentils?|apples?|berries|strawberries|blueberries|oranges?|grapes|yogurt|milk|chocolate)\b/gi);
+  if(words&&words.length>1)parts=words;
+ }
+ return [...new Set(parts)];
+}
+let selectedMood="";
+function cookWithIngredients(input,mood=""){
+ const available=parseAvailableIngredients(input);
+ if(!available.length)return {title:"What ingredients do you have?",text:"Enter your ingredients first, separated by commas. I won't add anything you haven't listed."};
+ const find=pattern=>available.find(x=>pattern.test(x))||null;
+ const compact=items=>[...new Set(items.filter(Boolean))];
+ const candidates=[];
+ const add=(title,ingredients,steps,time,tags=[])=>{
+  ingredients=compact(ingredients);
+  candidates.push({title,ingredients,steps,time,tags,score:ingredients.length*10+(tags.includes(mood)?5:0)});
+ };
+ const egg=find(/\beggs?\b/i),banana=find(/\bbananas?\b/i),oats=find(/\boats?\b|\boatmeal\b/i);
+ const spinach=find(/\bspinach\b/i),feta=find(/\bfeta\b/i),mushroom=find(/\bmushrooms?\b/i),tomato=find(/\btomato(?:es)?\b/i);
+ const cheese=find(/\bcheese\b|\bmozzarella\b/i),garlic=find(/\bgarlic\b/i),pesto=find(/\bpesto\b/i);
+ const chicken=find(/\bchicken\b/i),pasta=find(/\bpasta\b|\bspaghetti\b|\bpenne\b|\bnoodles?\b/i);
+ const bread=find(/\bbread\b|\btoast\b|\bsourdough\b|\bwraps?\b|\btortillas?\b/i);
+ const greens=find(/\blettuce\b|\bgreens\b|\barugula\b|\brocket\b/i);
+ const cucumber=find(/\bcucumbers?\b/i),avocado=find(/\bavocados?\b/i),pepper=find(/\bpeppers?\b|\bcapsicum\b/i);
+ const beans=find(/\bbeans?\b|\bchickpeas?\b/i),rice=find(/\brice\b|\bquinoa\b/i);
+ const carrot=find(/\bcarrots?\b/i),broccoli=find(/\bbroccoli\b/i),zucchini=find(/\bzucchini\b/i),onion=find(/\bonions?\b/i);
+ const potato=find(/\bpotato(?:es)?\b|\bsweet potato(?:es)?\b/i),fish=find(/\bsalmon\b|\bfish\b/i),shrimp=find(/\bshrimp\b/i),tofu=find(/\btofu\b/i);
+ const lentils=find(/\blentils?\b/i),yogurt=find(/\byogurt\b/i),milk=find(/\bmilk\b/i),chocolate=find(/\bchocolate\b/i);
+ const fruit=compact([banana,find(/\bapples?\b/i),find(/\bberries\b|\bstrawberries\b|\bblueberries\b/i),find(/\boranges?\b/i),find(/\bgrapes\b/i)]);
+ if(banana&&egg&&oats)add("Banana oat pancakes",[banana,egg,oats],[
+  `Mash ${banana}, then mix with ${egg} and ${oats} into a thick batter.`,
+  "Spoon small pancakes into a nonstick pan over medium-low heat.",
+  "Cook on both sides until golden and fully set."
+ ],15,["sweet","quick","vegetarian"]);
+ if(egg){
+  const vegetables=compact([spinach,mushroom,tomato,pepper]);
+  const toppings=compact([feta,cheese]);
+  add(vegetables.length||toppings.length?"Your-ingredients omelette":"Simple omelette",[egg,...vegetables,...toppings],[
+   ...(vegetables.length?[`Chop ${vegetables.join(", ")} and cook in a nonstick pan until tender.`]:[]),
+   `Beat ${egg} and pour into the nonstick pan. Cook gently until fully set.`,
+   ...(toppings.length?[`Add ${toppings.join(", ")}, fold, and serve.`]:["Fold and serve."])
+  ],12,["quick","vegetarian"]);
+ }
+ if(pasta){
+  const vegetables=compact([tomato,garlic,spinach,mushroom,pepper]);
+  const finish=compact([pesto,cheese]);
+  if(vegetables.length||finish.length||chicken||tofu||broccoli||carrot||onion){
+   add("Cook-with-what-you-have pasta",[pasta,chicken,tofu,broccoli,carrot,onion,...vegetables,...finish],[
+    `Cook ${pasta} according to its package directions.`,
+    ...(chicken?[`Cook ${chicken} thoroughly to 74°C / 165°F, then slice it.`]:[]),
+    ...(tofu?[`Cook ${tofu} in a nonstick pan until heated through and golden.`]:[]),
+    ...(compact([broccoli,carrot,onion,...vegetables]).length?[`Cook ${compact([broccoli,carrot,onion,...vegetables]).join(", ")} in a nonstick pan until tender.`]:[]),
+    `Toss the cooked ${pasta} with ${compact([chicken,tofu,broccoli,carrot,onion,...vegetables,...finish]).join(", ")} and serve.`
+   ],25,["quick","vegetarian"]);
+  }else add("Simple pasta",[pasta],[`Cook ${pasta} according to its package directions.`,`Drain and serve ${pasta} warm.`],15,["quick","vegetarian"]);
+ }
+ if(bread){
+  const fillings=compact([chicken,pesto,cheese,feta,tomato,greens,avocado,cucumber,egg]);
+  if(fillings.length)add("Your-ingredients sandwich",[bread,...fillings],[
+   ...(chicken?[`If ${chicken} is raw, cook it thoroughly to 74°C / 165°F; then slice it.`]:[]),
+   ...(egg?[`Cook ${egg} until fully set.`]:[]),
+   `Prepare ${compact([tomato,greens,avocado,cucumber]).join(", ")||"the fillings"} and layer ${fillings.join(", ")} on ${bread}.`,
+   "Close the sandwich and serve, or toast it in a dry pan."
+  ],15,["quick"]);
+  else add("Warm toast",[bread],[`Toast ${bread} in a dry pan until golden on both sides.`,`Serve warm.`],5,["quick","vegetarian"]);
+ }
+ const saladBase=greens||beans;
+ const rawProduce=compact([tomato,cucumber,avocado,pepper,spinach,carrot]);
+ const saladExtras=compact([...rawProduce,feta,cheese]);
+ if(saladBase||rawProduce.length)add("Fresh pantry salad",compact([greens,beans,...saladExtras]),[
+  `Wash and prepare ${compact([greens,beans,...saladExtras]).join(", ")}.`,
+  ...(beans?[`Drain and rinse ${beans} if canned.`]:[]),
+  "Combine everything in a bowl and serve."
+ ],10,["healthy","quick","vegetarian"]);
+ if(rice){
+  const toppings=compact([chicken,fish,shrimp,tofu,egg,beans,spinach,mushroom,tomato,pepper,carrot,broccoli,onion,avocado,cucumber]);
+  if(toppings.length)add("Simple grain bowl",[rice,...toppings],[
+   `Cook ${rice} according to its package directions.`,
+   ...(chicken?[`Cook ${chicken} thoroughly to 74°C / 165°F, then slice it.`]:[]),
+   ...(fish?[`Cook ${fish} until it reaches 63°C / 145°F in the thickest part.`]:[]),
+   ...(shrimp?[`Cook ${shrimp} until opaque and cooked through.`]:[]),
+   ...(tofu?[`Cook ${tofu} in a nonstick pan until heated through.`]:[]),
+   ...(egg?[`Cook ${egg} until fully set.`]:[]),
+   ...(compact([spinach,mushroom,pepper,carrot,broccoli,onion]).length?[`Cook ${compact([spinach,mushroom,pepper,carrot,broccoli,onion]).join(", ")} until tender.`]:[]),
+   ...(beans?[`Drain and rinse ${beans} if canned.`]:[]),
+   `Top ${rice} with ${toppings.join(", ")} and serve.`
+  ],25,["healthy","vegetarian"]);
+  else add("Simple grain bowl",[rice],[`Cook ${rice} according to its package directions.`,`Fluff ${rice} and serve warm.`],20,["quick","vegetarian"]);
+ }
+ if(potato){
+  const vegetables=compact([onion,pepper,broccoli,carrot,zucchini,tomato]);
+  add("Roasted potato plate",[potato,...vegetables],[
+   `Heat the oven to 220°C / 425°F. Cut ${compact([potato,...vegetables]).join(", ")} into bite-sized pieces.`,
+   "Spread on a baking sheet and roast for 30–40 minutes, turning halfway, until the potato is tender and browned."
+  ],45,["vegetarian","healthy"]);
+ }
+ if(lentils)add("Simple lentil pot",[lentils,tomato,onion,carrot,garlic],[
+  `Rinse ${lentils} and simmer in water according to its package directions.`,
+  ...(compact([tomato,onion,carrot,garlic]).length?[`Add ${compact([tomato,onion,carrot,garlic]).join(", ")} and cook until everything is tender.`]:[]),
+  "Serve warm."
+ ],35,["healthy","vegetarian"]);
+ if(chicken||fish||shrimp||tofu){
+  const protein=chicken||fish||shrimp||tofu;
+  const vegetables=compact([broccoli,carrot,zucchini,onion,mushroom,spinach,pepper,tomato]);
+  add("Simple skillet plate",[protein,...vegetables],[
+   ...(chicken?[`Cook ${chicken} in a nonstick skillet until it reaches 74°C / 165°F.`]:[]),
+   ...(fish?[`Cook ${fish} until it reaches 63°C / 145°F in the thickest part.`]:[]),
+   ...(shrimp?[`Cook ${shrimp} until opaque and cooked through.`]:[]),
+   ...(tofu?[`Cook ${tofu} until heated through and lightly golden.`]:[]),
+   ...(vegetables.length?[`Cook ${vegetables.join(", ")} until tender, then serve with ${protein}.`]:[`Serve ${protein} warm.`])
+  ],20,["quick","healthy"]);
+ }
+ if(fruit.length||yogurt){
+  const fruitBowl=compact([yogurt,...fruit,oats]);
+  add(yogurt?(fruit.length?"Fruit and yogurt bowl":"Yogurt bowl"):"Fresh fruit bowl",fruitBowl,[
+   ...(fruit.length?[`Wash and slice ${fruit.join(", ")} as needed.`]:[]),
+   `Arrange ${fruitBowl.join(", ")} in a bowl and serve.`
+  ],5,["sweet","quick","healthy","vegetarian"]);
+ }else if(oats)add("Simple oatmeal",[oats,milk],[
+  `Cook ${oats} according to its package directions${milk?` using ${milk}`:""}.`,
+  "Serve warm."
+ ],10,["quick","vegetarian"]);
+ if(chocolate)add("Chocolate bark",[chocolate],[`Gently melt ${chocolate} over low heat.`,`Spread it thinly on a lined plate and let it cool until firm, then break into pieces.`],10,["sweet","vegetarian"]);
+ const filtered=mood==="vegetarian"?candidates.filter(x=>!x.ingredients.some(i=>/\b(chicken|meat|fish|salmon|shrimp)\b/i.test(i))):candidates;
+ filtered.sort((a,b)=>b.score-a.score||a.time-b.time);
+ if(!filtered.length)return {title:"No reliable recipe from that list yet",text:"I couldn't make a reliable recipe using only those ingredients. Try adding more ingredients you have, such as eggs, pasta, bread, rice, or greens."};
+ return filtered[0];
+}
+function showIngredientRecipe(){
+ const result=cookWithIngredients($("#aiPrompt").value,selectedMood);
+ if(result.ingredients){
+  $("#aiResult").style.display="none";
+  const recipe={title:result.title,ingredients:result.ingredients,steps:result.steps,time:result.time};
+  const url=`assistant_recipe.html#${encodeURIComponent(JSON.stringify(recipe))}`;
+  const newPage=window.open(url,"_blank");
+  if(newPage)newPage.opener=null;
+  else window.location.href=url;
+  return;
+ }
+ const el=$("#aiResult");
+ el.style.display="block";
+ el.innerHTML=`<strong>${escapeHTML(result.title)}</strong><div style="margin-top:8px">${escapeHTML(result.text)}</div>`;
+ el.scrollIntoView({behavior:"smooth",block:"center"});
+ $("#aiPrompt").focus({preventScroll:true});
+}
+$("#askAI").addEventListener("click",showIngredientRecipe);
+$("#aiPrompt").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();showIngredientRecipe()}});
+document.querySelectorAll("[data-prompt]").forEach(b=>b.addEventListener("click",()=>{
+ selectedMood=selectedMood===b.dataset.prompt?"":b.dataset.prompt;
+ document.querySelectorAll("[data-prompt]").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.prompt===selectedMood)));
+ showIngredientRecipe();
+}));
+$("#newsletterForm").addEventListener("submit",e=>{e.preventDefault();toast("Thanks for joining the Dishly list! (Demo only)");e.target.reset()});
+updateSavedCount();renderRecipes();
+</script>
+</body>
+</html>

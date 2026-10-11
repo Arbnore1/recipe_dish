@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#193e32" />
+<meta name="description" content="Your made-for-you Dishly recipe, using only the ingredients you entered." />
+<title>Your recipe — Dishly</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body class="assistant-recipe-page">
+<header>
+  <div class="wrap header-inner">
+    <a class="brand" href="dishly_recipe_book.html">dishly<span>.</span></a>
+    <a class="outline-btn" href="dishly_recipe_book.html#ai">← Try another recipe</a>
+  </div>
+</header>
+<main class="wrap assistant-recipe-main">
+  <a class="recipe-back" href="dishly_recipe_book.html#ai">← Back to the assistant</a>
+  <div class="recipe-page-intro">
+    <div class="eyebrow">Made from your ingredients</div>
+    <h1 id="recipeTitle">Your recipe</h1>
+    <p id="recipeIntro">A simple idea made with what you already have.</p>
+    <div class="recipe-page-meta" id="recipeMeta"></div>
+  </div>
+  <div class="recipe-page-grid" id="recipeDetails" hidden>
+    <section class="recipe-page-card">
+      <h2>What you'll use</h2>
+      <p>Only ingredients from your list.</p>
+      <div id="recipeIngredients"></div>
+    </section>
+    <section class="recipe-page-card">
+      <h2>Let's cook</h2>
+      <ol class="steps" id="recipeSteps"></ol>
+    </section>
+  </div>
+  <div class="recipe-page-empty" id="recipeEmpty" hidden>
+    This recipe link is missing its details. <a href="dishly_recipe_book.html#ai">Make a new recipe →</a>
+  </div>
+</main>
+<footer><div class="wrap footer-inner"><div><div class="footer-brand">dishly<span>.</span></div><p>Your virtual recipe book. Made for everyday deliciousness.</p></div><div class="footer-links"><a href="dishly_recipe_book.html#catalog">Browse recipes</a><a href="dishly_recipe_book.html#ai">AI Assistant</a></div></div></footer>
+<script>
+try {
+  const recipe=JSON.parse(decodeURIComponent(location.hash.slice(1)));
+  if(!recipe||typeof recipe.title!=="string"||!Array.isArray(recipe.ingredients)||!Array.isArray(recipe.steps)||!recipe.ingredients.length||!recipe.steps.length)throw new Error("Missing recipe");
+  document.title=`${recipe.title} — Dishly`;
+  document.querySelector("#recipeTitle").textContent=recipe.title;
+  document.querySelector("#recipeIntro").textContent="Cook something delicious with only the ingredients you entered.";
+  document.querySelector("#recipeMeta").textContent=Number.isFinite(recipe.time)?`◷ ${recipe.time} minutes · Made for your kitchen`:"Made for your kitchen";
+  const ingredients=document.querySelector("#recipeIngredients");
+  recipe.ingredients.forEach(item=>{
+    const label=document.createElement("label");
+    label.className="ingredient";
+    const checkbox=document.createElement("input");
+    checkbox.type="checkbox";
+    const name=document.createElement("span");
+    name.textContent=String(item);
+    label.append(checkbox,name);
+    ingredients.append(label);
+  });
+  const steps=document.querySelector("#recipeSteps");
+  recipe.steps.forEach(step=>{
+    const item=document.createElement("li");
+    item.textContent=String(step);
+    steps.append(item);
+  });
+  document.querySelector("#recipeDetails").hidden=false;
+} catch {
+  document.querySelector("#recipeEmpty").hidden=false;
+}
+</script>
+</body>
+</html>
